@@ -14,23 +14,23 @@ function App() {
 
     useEffect(() => {
         onLoad();
-    }, [])
+    }, [onLoad])
 
     function onLoad(): void {
-        let processedRecentChampions: Array<Team> = parseStringIntoArray(nhlTeamsRecentYearChampionList);
-        let processedTeamsYearFounded: Array<Team> = parseStringIntoArray(nhlTeamsYearFoundedList);
+        let processedRecentChampions: Array<Team> = transformTextToColumns(nhlTeamsRecentYearChampionList);
+        let processedTeamsYearFounded: Array<Team> = transformTextToColumns(nhlTeamsYearFoundedList);
 
-        let teamsWithoutChampionshipWin = processedRecentChampions.filter(team => team.year === "")
+        let teamsWithoutChampionshipWin = processedRecentChampions.filter(team => team.year === "");
 
-        let teamsFoundedBefore1990 = processedTeamsYearFounded.filter(team => parseInt(team.year) < 1990)
+        let teamsFoundedBefore1990 = processedTeamsYearFounded.filter(team => parseInt(team.year) < 1990);
 
-        let teamsWithoutStartingVowels = teamsFoundedBefore1990.filter(excludeStartingVowels)
+        let teamsWithoutStartingVowels = teamsFoundedBefore1990.filter(excludeStartingVowels);
 
         let finalList: Array<Team> = [];
         teamsWithoutChampionshipWin.forEach(noWinTeam => {
             teamsWithoutStartingVowels.forEach(noVowelTeam => {
                 if (noVowelTeam.nhlTeamName === noWinTeam.nhlTeamName) {
-                    finalList.push(noVowelTeam)
+                    finalList.push(noVowelTeam);
                 }
             })
         });
@@ -39,12 +39,12 @@ function App() {
             let teamA = a.nhlTeamName.toUpperCase();
             let teamB = b.nhlTeamName.toUpperCase();
             return (teamA < teamB) ? -1 : (teamA > teamB) ? 1 : 0;
-        })
+        });
 
-        setFilteredList(finalSortedList)
+        setFilteredList(finalSortedList);
     }
 
-    function parseStringIntoArray(stringData: string): Array<Team> {
+    function transformTextToColumns(stringData: string): Array<Team> {
         let nhlTeamArray: Array<Team> = [];
         let lines: string[] = stringData.split(/\r\n|\n/);
 
