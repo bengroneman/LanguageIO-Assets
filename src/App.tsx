@@ -4,7 +4,7 @@ import { nhlTeamsYearFoundedList } from "./data/nhl-teams-year-founded";
 
 import "./main.css";
 
-interface Team {
+export interface Team {
     nhlTeamName: string;
     year: string;
 }
@@ -14,7 +14,7 @@ function App() {
 
     useEffect(() => {
         onLoad();
-    })
+    }, [setFilteredList])
 
     function onLoad(): void {
         let processedRecentChampions: Array<Team> = transformTextToColumns(nhlTeamsRecentYearChampionList);
@@ -44,22 +44,6 @@ function App() {
         setFilteredList(finalSortedList);
     }
 
-    function transformTextToColumns(stringData: string): Array<Team> {
-        let nhlTeamArray: Array<Team> = [];
-        let lines: string[] = stringData.split(/\r\n|\n/);
-
-        lines.forEach((line) => {
-            let values: string[] = line.split(',');
-            let nhlTeamNameAndYear: Team = { nhlTeamName: values[0], year: values[1]};
-            nhlTeamArray.push(nhlTeamNameAndYear)
-        });
-        return nhlTeamArray;
-    }
-
-    function excludeStartingVowels(team: Team): boolean {
-        return !/^[aeiou]/i.test(team.nhlTeamName.toLowerCase())
-    }
-
     return (
         <div>
             <h1 style={{ textAlign: "center" }}>NHL Teams for Purchase</h1>
@@ -74,6 +58,22 @@ function App() {
             </span>
         </div>
     );
+}
+
+export function transformTextToColumns(stringData: string): Array<Team> {
+    let nhlTeamArray: Array<Team> = [];
+    let lines: string[] = stringData.split(/\r\n|\n/);
+
+    lines.forEach((line) => {
+        let values: string[] = line.split(',');
+        let nhlTeamNameAndYear: Team = { nhlTeamName: values[0], year: values[1]};
+        nhlTeamArray.push(nhlTeamNameAndYear)
+    });
+    return nhlTeamArray;
+}
+
+export function excludeStartingVowels(team: Team): boolean {
+    return !/^[aeiou]/i.test(team.nhlTeamName.toLowerCase())
 }
 
 export default App;
