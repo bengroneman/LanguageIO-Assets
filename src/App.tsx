@@ -14,7 +14,7 @@ function App() {
 
     useEffect(() => {
         onLoad();
-    }, [onLoad])
+    })
 
     function onLoad(): void {
         let processedRecentChampions: Array<Team> = transformTextToColumns(nhlTeamsRecentYearChampionList);
